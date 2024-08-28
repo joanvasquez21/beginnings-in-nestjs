@@ -18,7 +18,16 @@ export class BrandsService {
   ];
 
   create(createBrandDto: CreateBrandDto) {
+    const { name } = createBrandDto;
     
+    const brand: Brand = {
+      id: uuid(),
+      name: name.toLowerCase(),
+      createdAt: new Date().getTime(),
+    }
+
+    this.brands.push(brand);
+
   }
 
   findAll() {
@@ -27,17 +36,35 @@ export class BrandsService {
 
   findOne(id: string) {
     const brand = this.brands.find(brand => brand.id === id);
-    if(brand){
-      throw new NotFoundException(`Not found ${brand.name}`);
-    }
+    if(!brand) throw new NotFoundException(`Brand with id "${id}" not found`);
+    
     return brand;
   }
 
-  update(id: number, updateBrandDto: UpdateBrandDto) {
-    return `This action updates a #${id} brand`;
+  update(id: string, updateBrandDto: UpdateBrandDto) {
+    let brandDb = this.findOne(id);
+
+    this.brands = this.brands.map(brand => {
+      if(brandDb.id === id){
+        brandDb.updatedAt = new Date().getTime();
+        brandDb = {
+          ...brandDb,
+          ...updateBrandDto
+        }
+        return brandDb;
+      }
+      return brand;
+    });
+    return brandDb;
+
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} brand`;
+  remove(id: string) {
+    this.brands = this.brands.filter(brand => brand.id === id);
   }
+
+
+  fillCarsWithSeedData(brands: Brand[]){
+    this.brands = brands;
+}
 }

@@ -9,6 +9,5 @@ Populate Db
 localhost:3000/seed
 
 ```
-#### Controlador
-
+#### 
 El archivo BrandsController define un conjunto de endpoints para gestionar las operaciones relacionadas con marcas en una aplicación construida con NestJS. Este controlador utiliza un servicio (BrandsService) para realizar las operaciones principales de creación, lectura, actualización y eliminación (CRUD).
